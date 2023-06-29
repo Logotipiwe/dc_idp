@@ -14,6 +14,7 @@ services:
       SUBPATH: ${SUBPATH-/oauth2}
       OUTER_SCHEME: http
       OUTER_HOST: localhost
+      FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
 #    ports:
 #      - 82:80
 networks:
