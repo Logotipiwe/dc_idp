@@ -1,8 +1,10 @@
 package main
 
 import (
+	"bytes"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"html/template"
 	"net/http"
 	"net/url"
 	"os"
@@ -44,6 +46,17 @@ func main() {
 			redirTo = getFallbackRedirect()
 		}
 		http.Redirect(w, r, redirTo, 302)
+	})
+
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		tmpl := template.Must(template.ParseFiles("src/templates/login.gohtml"))
+		redirTo := r.URL.Query().Get("redirect")
+		var tpl bytes.Buffer
+		if err := tmpl.Execute(&tpl, redirTo); err != nil {
+			fmt.Fprintf(w, "Internal error")
+		}
+
+		fmt.Fprint(w, tpl.String())
 	})
 
 	err := http.ListenAndServe(":"+os.Getenv("CONTAINER_PORT"), nil)
