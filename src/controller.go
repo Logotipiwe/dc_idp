@@ -52,7 +52,8 @@ func main() {
 		tmpl := template.Must(template.ParseFiles("src/templates/login.gohtml"))
 		redirTo := r.URL.Query().Get("redirect")
 		var tpl bytes.Buffer
-		if err := tmpl.Execute(&tpl, redirTo); err != nil {
+		authHref := env.GetSubpath() + "/auth?redirect=" + url.QueryEscape(redirTo)
+		if err := tmpl.Execute(&tpl, authHref); err != nil {
 			fmt.Fprintf(w, "Internal error")
 		}
 
