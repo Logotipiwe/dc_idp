@@ -20,14 +20,23 @@ type User struct {
 	Locale     string `json:"locale"`
 }
 
-func getUserData(r *http.Request) (*User, error) {
-	cookie, _ := r.Cookie("access_token")
-	var accessToken string
-	if cookie != nil {
-		accessToken = cookie.Value
-	} else {
-		return nil, errors.New("empty access token")
+func getUserData(r *http.Request) (User, error) {
+	accessToken, err := getAccessTokenFromCookie(r)
+	if err != nil {
+		return User{}, err
 	}
+	return getUserDataFromToken(accessToken)
+}
+
+func getAccessTokenFromCookie(r *http.Request) (string, error) {
+	cookie, err := r.Cookie("access_token")
+	if err != nil {
+		return "", err
+	}
+	return cookie.Value, nil
+}
+
+func getUserDataFromToken(accessToken string) (User, error) {
 	bearer := "Bearer " + accessToken
 	getUrl := "https://www.googleapis.com/oauth2/v3/userinfo"
 	request, _ := http.NewRequest("GET", getUrl, nil)
@@ -37,11 +46,14 @@ func getUserData(r *http.Request) (*User, error) {
 	res, _ := client.Do(request)
 	defer res.Body.Close()
 	var answer User
-	json.NewDecoder(res.Body).Decode(&answer)
+	err := json.NewDecoder(res.Body).Decode(&answer)
+	if err != nil {
+		return User{}, err
+	}
 	if answer.Sub != "" {
-		return &answer, nil
+		return answer, nil
 	} else {
-		return &answer, errors.New("WTF HUH")
+		return answer, errors.New("WTF HUH")
 	}
 }
 
@@ -71,4 +83,21 @@ func exchangeCodeToToken(code string) string {
 	accessToken := answer["access_token"]
 	println(fmt.Sprintf("Access token got with status 200. Token = %v", accessToken))
 	return accessToken
+}
+
+func getRedirectUri(r *http.Request) string {
+	redirToCookie, err := r.Cookie(redirAfterAuthCookieName)
+	var redirTo string
+	if err != nil {
+		println("Error getting redirectTo cookie")
+		redirTo = ""
+	}
+	redirTo = redirToCookie.Value
+
+	if redirTo == "" {
+		redirTo = getFallbackRedirect()
+		println(fmt.Sprintf(
+			"RedirTo value is empty. Setting fallback redirect %v", redirTo))
+	}
+	return redirTo
 }

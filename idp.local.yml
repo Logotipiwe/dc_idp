@@ -15,6 +15,7 @@ services:
       OUTER_SCHEME: http
       OUTER_HOST: localhost
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
+      AUTO_AUTH: 1
 #    ports:
 #      - 82:80
 networks:

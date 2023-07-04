@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 )
@@ -25,23 +24,6 @@ func setATCookie(w http.ResponseWriter, token string) {
 		SameSite: http.SameSiteStrictMode,
 	}
 	http.SetCookie(w, &cookie)
-}
-
-func getRedirectUri(r *http.Request) string {
-	redirToCookie, err := r.Cookie(redirAfterAuthCookieName)
-	var redirTo string
-	if err != nil {
-		println("Error getting redirectTo cookie")
-		redirTo = ""
-	}
-	redirTo = redirToCookie.Value
-
-	if redirTo == "" {
-		redirTo = getFallbackRedirect()
-		println(fmt.Sprintf(
-			"RedirTo value is empty. Setting fallback redirect %v", redirTo))
-	}
-	return redirTo
 }
 
 func getFallbackRedirect() string {

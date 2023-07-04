@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
 	"html/template"
@@ -58,6 +59,20 @@ func main() {
 		}
 
 		fmt.Fprint(w, tpl.String())
+	})
+
+	http.HandleFunc("/getUser", func(w http.ResponseWriter, r *http.Request) {
+		user, err := getUserData(r)
+		if err != nil {
+			w.WriteHeader(403)
+			return
+		}
+		marshal, err := json.Marshal(user)
+		if err != nil {
+			w.WriteHeader(403)
+			return
+		}
+		fmt.Fprint(w, string(marshal))
 	})
 
 	err := http.ListenAndServe(":"+os.Getenv("CONTAINER_PORT"), nil)
