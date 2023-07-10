@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"io"
 	"net/http"
 	"net/url"
 	"os"
@@ -63,12 +64,15 @@ func getUserDataFromToken(accessToken string) (DcUser, error) {
 		return DcUser{}, err
 	}
 	defer res.Body.Close()
-	var answer GoogleUser
-	err = json.NewDecoder(res.Body).Decode(&answer)
+	answerStr, err := io.ReadAll(res.Body)
 	if err != nil {
-		fmt.Println("Error decoding user data!")
+		fmt.Println("Error reading user data!")
 		return DcUser{}, err
 	}
+	fmt.Println("Answer with user data is:")
+	fmt.Println(string(answerStr))
+	var answer GoogleUser
+	err = json.Unmarshal(answerStr, &answer)
 	fmt.Printf("User data is %s %s %s", answer.Sub, answer.Name, answer.Picture)
 	return DcUser{
 		Id:      answer.Sub,
