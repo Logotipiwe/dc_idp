@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"errors"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
 	"io"
@@ -74,6 +75,9 @@ func getUserDataFromToken(accessToken string) (DcUser, error) {
 	var answer GoogleUser
 	err = json.Unmarshal(answerStr, &answer)
 	fmt.Printf("User data is %s %s %s", answer.Sub, answer.Name, answer.Picture)
+	if answer.Sub == "" {
+		return DcUser{}, errors.New(string(answerStr))
+	}
 	return DcUser{
 		Id:      answer.Sub,
 		Name:    answer.Name,
