@@ -37,6 +37,7 @@ func getUserData(r *http.Request) (DcUser, error) {
 	if err != nil {
 		return DcUser{}, err
 	}
+	fmt.Println("Got AT from cookie, AT: " + accessToken)
 	return getUserDataFromToken(accessToken)
 }
 
@@ -55,16 +56,20 @@ func getUserDataFromToken(accessToken string) (DcUser, error) {
 	request.Header.Add("Authorization", bearer)
 
 	client := &http.Client{}
+	fmt.Println("Requesting user data...")
 	res, err := client.Do(request)
 	if err != nil {
+		fmt.Println("Error requesting user data!")
 		return DcUser{}, err
 	}
 	defer res.Body.Close()
 	var answer GoogleUser
 	err = json.NewDecoder(res.Body).Decode(&answer)
 	if err != nil {
+		fmt.Println("Error decoding user data!")
 		return DcUser{}, err
 	}
+	fmt.Printf("User data is %s %s %s", answer.Sub, answer.Name, answer.Picture)
 	return DcUser{
 		Id:      answer.Sub,
 		Name:    answer.Name,
