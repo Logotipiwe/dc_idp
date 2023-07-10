@@ -62,19 +62,23 @@ func main() {
 	})
 
 	http.HandleFunc("/getUser", func(w http.ResponseWriter, r *http.Request) {
+		println("/getUser")
+		w.Header().Set("Access-Control-Allow-Origin", "*") //TODO only on dev
 		user, err := getUserData(r)
 		if err != nil {
+			println("Error getting user: %s", err.Error())
 			w.WriteHeader(403)
 			return
 		}
 		marshal, err := json.Marshal(user)
 		if err != nil {
-			w.WriteHeader(403)
+			w.WriteHeader(500)
 			return
 		}
 		fmt.Fprint(w, string(marshal))
 	})
 
+	println("Ready")
 	err := http.ListenAndServe(":"+os.Getenv("CONTAINER_PORT"), nil)
 	println("Server up!")
 	if err != nil {

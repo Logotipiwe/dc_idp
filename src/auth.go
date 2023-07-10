@@ -2,7 +2,6 @@ package main
 
 import (
 	"encoding/json"
-	"errors"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
 	"net/http"
@@ -11,7 +10,7 @@ import (
 	"strings"
 )
 
-type User struct {
+type GoogleUser struct {
 	Sub        string `json:"sub"`
 	Name       string `json:"name"`
 	GivenName  string `json:"given_name"`
@@ -20,10 +19,23 @@ type User struct {
 	Locale     string `json:"locale"`
 }
 
-func getUserData(r *http.Request) (User, error) {
+type DcUser struct {
+	Id      string `json:"id"`
+	Name    string `json:"name"`
+	Picture string `json:"picture"`
+}
+
+func getUserData(r *http.Request) (DcUser, error) {
+	if os.Getenv("AUTO_AUTH") == "1" {
+		return DcUser{
+			Id:      os.Getenv("LOGOTIPIWE_GMAIL_ID"),
+			Name:    "Reman Gerus",
+			Picture: "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
+		}, nil
+	}
 	accessToken, err := getAccessTokenFromCookie(r)
 	if err != nil {
-		return User{}, err
+		return DcUser{}, err
 	}
 	return getUserDataFromToken(accessToken)
 }
@@ -36,25 +48,28 @@ func getAccessTokenFromCookie(r *http.Request) (string, error) {
 	return cookie.Value, nil
 }
 
-func getUserDataFromToken(accessToken string) (User, error) {
+func getUserDataFromToken(accessToken string) (DcUser, error) {
 	bearer := "Bearer " + accessToken
 	getUrl := "https://www.googleapis.com/oauth2/v3/userinfo"
 	request, _ := http.NewRequest("GET", getUrl, nil)
 	request.Header.Add("Authorization", bearer)
 
 	client := &http.Client{}
-	res, _ := client.Do(request)
-	defer res.Body.Close()
-	var answer User
-	err := json.NewDecoder(res.Body).Decode(&answer)
+	res, err := client.Do(request)
 	if err != nil {
-		return User{}, err
+		return DcUser{}, err
 	}
-	if answer.Sub != "" {
-		return answer, nil
-	} else {
-		return answer, errors.New("WTF HUH")
+	defer res.Body.Close()
+	var answer GoogleUser
+	err = json.NewDecoder(res.Body).Decode(&answer)
+	if err != nil {
+		return DcUser{}, err
 	}
+	return DcUser{
+		Id:      answer.Sub,
+		Name:    answer.Name,
+		Picture: answer.Picture,
+	}, nil
 }
 
 func exchangeCodeToToken(code string) string {
