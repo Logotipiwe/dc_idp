@@ -11,8 +11,8 @@ services:
       CONFIG_SERVER_URL: http://config_server
       SERVICE_NAME: idp
       NAMESPACE: dev-dc
-#    ports:
-#      - 82:80
+    ports:
+      - 83:80
 networks:
   dc-net:
     external: true
