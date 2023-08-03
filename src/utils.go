@@ -1,8 +1,8 @@
 package main
 
 import (
+	"github.com/logotipiwe/dc_go_utils/src/config"
 	"net/http"
-	"os"
 )
 
 func setRedirectAfterAuthCookie(w http.ResponseWriter, destination string) {
@@ -27,5 +27,5 @@ func setATCookie(w http.ResponseWriter, token string) {
 }
 
 func getFallbackRedirect() string {
-	return os.Getenv("FALLBACK_REDIRECT")
+	return config.GetConfig("FALLBACK_REDIRECT")
 }

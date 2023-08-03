@@ -9,7 +9,6 @@ import (
 	"html/template"
 	"net/http"
 	"net/url"
-	"os"
 )
 
 const clientId = "319710408255-ntkf14k8ruk4p98sn2u1ho4j99rpjqja.apps.googleusercontent.com"
@@ -81,7 +80,7 @@ func main() {
 	})
 
 	println("Ready")
-	err := http.ListenAndServe(":"+os.Getenv("CONTAINER_PORT"), nil)
+	err := http.ListenAndServe(":"+config.GetConfig("CONTAINER_PORT"), nil)
 	println("Server up!")
 	if err != nil {
 		panic("Lol server fell")

@@ -5,10 +5,10 @@ import (
 	"errors"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"github.com/logotipiwe/dc_go_utils/src/config"
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
@@ -28,9 +28,9 @@ type DcUser struct {
 }
 
 func getUserData(r *http.Request) (DcUser, error) {
-	if os.Getenv("AUTO_AUTH") == "1" {
+	if config.GetConfig("AUTO_AUTH") == "1" {
 		return DcUser{
-			Id:      os.Getenv("LOGOTIPIWE_GMAIL_ID"),
+			Id:      config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
 			Name:    "Reman Gerus",
 			Picture: "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
 		}, nil
@@ -90,7 +90,7 @@ func exchangeCodeToToken(code string) string {
 	postUrl := "https://oauth2.googleapis.com/token"
 	data := url.Values{}
 	data.Set("client_id", clientId)
-	data.Set("client_secret", os.Getenv("G_OAUTH_CLIENT_SECRET"))
+	data.Set("client_secret", config.GetConfig("G_OAUTH_CLIENT_SECRET"))
 	data.Set("code", code)
 	data.Set("grant_type", "authorization_code")
 	wtfIsThat := env.GetCurrUrl() + env.GetSubpath() + "/g-oauth"
