@@ -1,0 +1,25 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Go" type="GoApplicationRunConfiguration" factoryName="Go Application">
+    <module name="dc_idp" />
+    <working_directory value="$PROJECT_DIR$" />
+    <envs>
+      <env name="AUTO_AUTH" value="1 " />
+      <env name="CONFIG_SERVER_URL" value="http://localhost/config_server" />
+      <env name="CONTAINER_PORT" value="3001" />
+      <env name="G_OAUTH_CLIENT_SECRET" value="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" />
+      <env name="LOGOTIPIWE_GMAIL_ID" value="113600192853171443921" />
+      <env name="M_TOKEN" value="WLJWmgoJwown206J28Hkgwog" />
+      <env name="NAMESPACE" value="dev" />
+      <env name="OUTER_HOST" value="localhost" />
+      <env name="OUTER_PORT" value="3001" />
+      <env name="OUTER_SCHEME" value="http" />
+      <env name="SERVICE_NAME" value="idp" />
+      <env name="SUBPATH" value="" />
+    </envs>
+    <kind value="PACKAGE" />
+    <package value="dc_idp/src" />
+    <directory value="$PROJECT_DIR$" />
+    <filePath value="$PROJECT_DIR$/src/controller.go" />
+    <method v="2" />
+  </configuration>
+</component>
