@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"github.com/logotipiwe/dc_go_utils/src/config"
 	"html/template"
 	"net/http"
 	"net/url"
@@ -15,6 +16,7 @@ const clientId = "319710408255-ntkf14k8ruk4p98sn2u1ho4j99rpjqja.apps.googleuserc
 const redirAfterAuthCookieName = "redirect_after_auth"
 
 func main() {
+	config.LoadDcConfig()
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		println("/auth")
 		redirect := r.URL.Query().Get("redirect")

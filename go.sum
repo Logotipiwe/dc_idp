@@ -1,6 +1,4 @@
-github.com/Logotipiwe/dc_go_auth_lib v0.0.0-20230703160644-4c3505fcb895 h1:PInWR85x6KFpxJNlW6M8NJk/CxpnWtoS+3ROFyA8e4E=
-github.com/Logotipiwe/dc_go_auth_lib v0.0.0-20230703160644-4c3505fcb895/go.mod h1:QFJO1SKst/yPgOQJysNMCw1RCqYTHOnm2rd8brZmr+k=
-github.com/logotipiwe/dc_go_env_lib v0.0.3 h1:3tef8xQ5p3fmddVLvwSS3ZsG0Hy84QW2iQxAoVloYxM=
-github.com/logotipiwe/dc_go_env_lib v0.0.3/go.mod h1:HN8cGisuq49hkEj+A1uOXnvHcWPWWKq6mVE7yJpxlY4=
 github.com/logotipiwe/dc_go_env_lib v0.0.5 h1:h57uQxde4BCU7EBOYoAjNZJFSUNNFAe7pwFF2TzGNZw=
 github.com/logotipiwe/dc_go_env_lib v0.0.5/go.mod h1:HN8cGisuq49hkEj+A1uOXnvHcWPWWKq6mVE7yJpxlY4=
+github.com/logotipiwe/dc_go_utils v1.0.4 h1:L8IF0qOdB3tAOFsL1RqUtqT/0MrJZVkQwAoDsGUff4A=
+github.com/logotipiwe/dc_go_utils v1.0.4/go.mod h1:DWXDE69F5qh2TlyZptm/9qijWDACE93GDz6bOYWqeQg=

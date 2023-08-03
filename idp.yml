@@ -7,13 +7,6 @@ services:
     networks:
       - dc-net
     environment:
-      CONTAINER_PORT: ${CONFIG_SERVER_CONTAINER_PORT-80}
-      OUTER_PORT: ${OUTER_PORT-80}
-      LOGOTIPIWE_GMAIL_ID: ${LOGOTIPIWE_GMAIL_ID}
-      G_OAUTH_CLIENT_SECRET: ${G_OAUTH_CLIENT_SECRET}
-      SUBPATH: ${SUBPATH-/oauth2}
-      OUTER_SCHEME : ${OUTER_SCHEME}
-      OUTER_HOST : ${OUTER_HOST}
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
 #    ports:
 #      - 82:81
