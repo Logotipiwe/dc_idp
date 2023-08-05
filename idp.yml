@@ -7,6 +7,9 @@ services:
     networks:
       - dc-net
     environment:
+      CONFIG_SERVER_URL: http://config_server
+      SERVICE_NAME: idp
+      NAMESPACE: prod
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
 #    ports:
 #      - 82:81
