@@ -16,6 +16,7 @@ const redirAfterAuthCookieName = "redirect_after_auth"
 
 func main() {
 	config.LoadDcConfig()
+	InitDb()
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		println("/auth")
 		redirect := r.URL.Query().Get("redirect")
@@ -33,8 +34,18 @@ func main() {
 		println("/g-oauth")
 		code := r.URL.Query().Get("code")
 		println("Code is: " + code)
-		token := exchangeCodeToToken(code)
+		token := exchangeGoogleCodeToToken(code)
 		println("Token is: " + token)
+		user, err := getGoogleUserDataFromGoogleAT(token)
+		if err != nil {
+			fmt.Println(err)
+			w.WriteHeader(403) //TODO ??
+			return
+		}
+		err = createGoogleUserIfNeeded(user)
+		if err != nil {
+			fmt.Println(err)
+		}
 		setATCookie(w, token)
 		redirTo := getRedirectUri(r)
 		println("Redirecting after auth: " + redirTo)

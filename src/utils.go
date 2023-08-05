@@ -29,3 +29,7 @@ func setATCookie(w http.ResponseWriter, token string) {
 func getFallbackRedirect() string {
 	return config.GetConfig("FALLBACK_REDIRECT")
 }
+
+func isGoogleAutoAuth() bool {
+	return os.Getenv("GOOGLE_AUTO_AUTH") == "1"
+}
