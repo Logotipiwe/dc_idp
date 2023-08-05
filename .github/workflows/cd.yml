@@ -49,5 +49,6 @@ jobs:
         port: 22
         script: |
           export IMAGE=${{ env.IMAGE }}
+          export M_TOKEN=${{ env.M_TOKEN }}
           docker-compose -f /kuber/idp/idp.yml down --remove-orphans
           docker-compose -f /kuber/idp/idp.yml up -d
