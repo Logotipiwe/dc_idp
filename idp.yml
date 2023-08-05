@@ -10,6 +10,7 @@ services:
       CONFIG_SERVER_URL: http://config_server
       SERVICE_NAME: idp
       NAMESPACE: prod
+      M_TOKEN: ${M_TOKEN}
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
 #    ports:
 #      - 82:81
