@@ -2,7 +2,7 @@
   <configuration default="false" name="Up" type="docker-deploy" factoryName="docker-compose.yml" server-name="Docker">
     <deployment type="docker-compose.yml">
       <settings>
-        <option name="envFilePath" value="C:\Users\German\PhpstormProjects\dc_vars\local.env" />
+        <option name="envFilePath" value="C:\PhpstormProjects\dc_vars\local.env" />
         <option name="removeImagesOnComposeDown" value="LOCAL" />
         <option name="commandLineOptions" value="--build" />
         <option name="services">

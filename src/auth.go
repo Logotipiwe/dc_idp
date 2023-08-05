@@ -1,15 +1,9 @@
 package main
 
 import (
-	"encoding/json"
-	"errors"
 	"fmt"
-	env "github.com/logotipiwe/dc_go_env_lib"
 	"github.com/logotipiwe/dc_go_utils/src/config"
-	"io"
 	"net/http"
-	"net/url"
-	"strings"
 )
 
 type GoogleUser struct {
@@ -28,23 +22,28 @@ type DcUser struct {
 	GoogleId string `json:"googleId"`
 }
 
-func getUserData(r *http.Request) (DcUser, error) {
+func getUserData(r *http.Request) (*DcUser, error) {
 	accessToken, err := getAccessTokenFromCookie(r)
 	if err != nil {
 		fmt.Println(err) //only log because test user without AT can be returned later
 	}
 	fmt.Println("Got google AT from cookie, AT: " + accessToken)
 	user, err := getGoogleUserDataFromGoogleAT(accessToken)
-	return *user, err
+	return user, err
 }
 
-func getAutoAuthedUser() DcUser {
-	return DcUser{
+func getAutoAuthedUser() *DcUser {
+	user := DcUser{
 		Id:       config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
 		Name:     "Reman Gerus",
 		Picture:  "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
 		GoogleId: config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
 	}
+	err := createGoogleUserIfNeeded(&user)
+	if err != nil {
+		return nil
+	}
+	return &user
 }
 
 func getAccessTokenFromCookie(r *http.Request) (string, error) {

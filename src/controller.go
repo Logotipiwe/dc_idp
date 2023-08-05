@@ -82,7 +82,7 @@ func main() {
 			w.WriteHeader(403)
 			return
 		}
-		marshal, err := json.Marshal(user)
+		marshal, err := json.Marshal(&user)
 		if err != nil {
 			w.WriteHeader(500)
 			return

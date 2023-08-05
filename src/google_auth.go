@@ -5,17 +5,17 @@ import (
 	"errors"
 	"fmt"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"github.com/logotipiwe/dc_go_utils/src/config"
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 )
 
 func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*DcUser, error) {
 	if isGoogleAutoAuth() {
 		autoUser := getAutoAuthedUser()
-		return &autoUser, nil
+		return autoUser, nil
 	}
 	bearer := "Bearer " + googleAccessToken
 	getUrl := "https://www.googleapis.com/oauth2/v3/userinfo"
@@ -56,7 +56,7 @@ func exchangeGoogleCodeToToken(code string) string {
 	postUrl := "https://oauth2.googleapis.com/token"
 	data := url.Values{}
 	data.Set("client_id", clientId)
-	data.Set("client_secret", os.Getenv("G_OAUTH_CLIENT_SECRET"))
+	data.Set("client_secret", config.GetConfig("G_OAUTH_CLIENT_SECRET"))
 	data.Set("code", code)
 	data.Set("grant_type", "authorization_code")
 	wtfIsThat := env.GetCurrUrl() + env.GetSubpath() + "/g-oauth"

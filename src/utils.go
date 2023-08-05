@@ -31,5 +31,5 @@ func getFallbackRedirect() string {
 }
 
 func isGoogleAutoAuth() bool {
-	return os.Getenv("GOOGLE_AUTO_AUTH") == "1"
+	return config.GetConfig("GOOGLE_AUTO_AUTH") == "1"
 }
