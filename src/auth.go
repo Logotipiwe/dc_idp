@@ -22,14 +22,14 @@ type DcUser struct {
 	GoogleId string `json:"googleId"`
 }
 
-func getUserData(r *http.Request) (DcUser, error) {
+func getUserData(r *http.Request) (*DcUser, error) {
 	accessToken, err := getAccessTokenFromCookie(r)
 	if err != nil {
 		fmt.Println(err) //only log because test user without AT can be returned later
 	}
 	fmt.Println("Got google AT from cookie, AT: " + accessToken)
 	user, err := getGoogleUserDataFromGoogleAT(accessToken)
-	return *user, err
+	return user, err
 }
 
 func getAutoAuthedUser() DcUser {

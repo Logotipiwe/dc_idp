@@ -1,9 +1,13 @@
 schema:
-  SUBPATH: string (/oauth2)
-  OUTER_HOST: string (localhost)
-  OUTER_PORT: string
-  CONTAINER_PORT: string
   DB_HOST: string
-  DB_LOGIN: string
+  DB_USER: string
   DB_PASS: string
   DB_NAME: string
+  CONTAINER_PORT: num
+  OUTER_PORT: num
+  LOGOTIPIWE_GMAIL_ID: string
+  G_OAUTH_CLIENT_SECRET: string
+  SUBPATH: string
+  OUTER_SCHEME: string
+  OUTER_HOST: string
+  FALLBACK_REDIRECT: string
