@@ -1,3 +1,4 @@
+create database idp;
 create table idp.users
 (
     id        varchar(255) not null,
