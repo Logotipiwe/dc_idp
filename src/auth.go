@@ -28,16 +28,22 @@ func getUserData(r *http.Request) (*DcUser, error) {
 		fmt.Println(err) //only log because test user without AT can be returned later
 	}
 	fmt.Println("Got google AT from cookie, AT: " + accessToken)
-	user, err := getGoogleUserDataFromGoogleAT(accessToken)
-	return user, err
+	gUser, err := getGoogleUserDataFromGoogleAT(accessToken)
+	if err != nil {
+		return nil, err
+	}
+	user := createDcUserFromGoogleUser(gUser)
+	return user, nil
 }
 
-func getAutoAuthedUser() DcUser {
-	return DcUser{
-		Id:       config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
-		Name:     "Reman Gerus",
-		Picture:  "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
-		GoogleId: config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
+func getAutoAuthedUser() GoogleUser {
+	return GoogleUser{
+		Sub:        config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
+		Name:       "Reman Gerus",
+		GivenName:  "Reman",
+		FamilyName: "Gerus",
+		Picture:    "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
+		Locale:     "??",
 	}
 }
 

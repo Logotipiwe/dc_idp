@@ -12,7 +12,7 @@ import (
 	"strings"
 )
 
-func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*DcUser, error) {
+func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*GoogleUser, error) {
 	if isGoogleAutoAuth() {
 		autoUser := getAutoAuthedUser()
 		return &autoUser, nil
@@ -43,12 +43,7 @@ func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*DcUser, error) {
 	if answer.Sub == "" {
 		return nil, errors.New(string(answerStr))
 	}
-	return &DcUser{
-		Id:       answer.Sub,
-		Name:     answer.Name,
-		Picture:  answer.Picture,
-		GoogleId: answer.Sub, //TODO temp
-	}, nil
+	return &answer, nil
 }
 
 func exchangeGoogleCodeToToken(code string) string {
@@ -94,4 +89,13 @@ func createGoogleUserIfNeeded(user *DcUser) error {
 		fmt.Println("User with google id " + user.GoogleId + " created!")
 	}
 	return nil
+}
+
+func createDcUserFromGoogleUser(gUser *GoogleUser) *DcUser {
+	return &DcUser{
+		Id:       gUser.Sub, //temp
+		Name:     gUser.Name,
+		Picture:  gUser.Picture,
+		GoogleId: gUser.Sub,
+	}
 }

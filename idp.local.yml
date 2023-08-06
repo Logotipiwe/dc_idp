@@ -20,7 +20,6 @@ services:
       OUTER_SCHEME: http
       OUTER_HOST: localhost
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
-      AUTO_AUTH: 1
       GOOGLE_AUTO_AUTH: 0
 #      CONFIG_SERVER_URL: http://config_server
 #      SERVICE_NAME: pixel-battle-back
