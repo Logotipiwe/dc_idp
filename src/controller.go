@@ -39,7 +39,7 @@ func main() {
 		token := exchangeGoogleCodeToToken(code)
 		println("Token is: " + token)
 		gUser, err := getGoogleUserDataFromGoogleAT(token)
-		var user *DcUser
+		user := createDcUserFromGoogleUser(gUser)
 		exists, err := existsInDbByGoogleId(gUser.Sub)
 		if err != nil {
 			fmt.Println(err)
@@ -47,8 +47,15 @@ func main() {
 			return
 		}
 		if exists {
-			user = createDcUserFromGoogleUser(gUser)
+			fmt.Println("Dc user exists in db, receiving it...")
+			user, err = getUserFromDbByGoogleId(gUser.Sub)
+			if err != nil {
+				fmt.Println(err)
+				w.WriteHeader(500)
+				return
+			}
 		} else {
+			fmt.Println("Dc user doesn't exist. Creating...")
 			user, err = createUserInDb(user)
 			if err != nil {
 				fmt.Println(err)
@@ -56,6 +63,7 @@ func main() {
 				return
 			}
 		}
+		fmt.Printf("Dc user is : %v\n", user)
 
 		setATCookie(w, token)
 		redirTo := getRedirectUri(r)

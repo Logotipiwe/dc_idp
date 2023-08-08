@@ -2,7 +2,6 @@ package main
 
 import (
 	"fmt"
-	"github.com/logotipiwe/dc_go_utils/src/config"
 	"net/http"
 )
 
@@ -32,19 +31,7 @@ func getUserData(r *http.Request) (*DcUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	user := createDcUserFromGoogleUser(gUser)
-	return user, nil
-}
-
-func getAutoAuthedUser() GoogleUser {
-	return GoogleUser{
-		Sub:        config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
-		Name:       "Reman Gerus",
-		GivenName:  "Reman",
-		FamilyName: "Gerus",
-		Picture:    "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
-		Locale:     "??",
-	}
+	return getUserFromDbByGoogleId(gUser.Sub)
 }
 
 func getAccessTokenFromCookie(r *http.Request) (string, error) {

@@ -4,7 +4,6 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/go-sql-driver/mysql"
-	"github.com/google/uuid"
 	. "github.com/logotipiwe/dc_go_utils/src/config"
 )
 
@@ -36,11 +35,20 @@ func existsInDbByGoogleId(googleId string) (bool, error) {
 }
 
 func createUserInDb(user *DcUser) (*DcUser, error) {
-	_ = uuid.New()
 	_, err := db.Exec("INSERT INTO users (id, name, picture, google_id) VALUES (?,?,?,?)",
-		user.Id, user.Name, user.Picture, user.Id)
+		user.Id, user.Name, user.Picture, user.GoogleId)
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
+}
+
+func getUserFromDbByGoogleId(gId string) (*DcUser, error) {
+	user := DcUser{}
+	row := db.QueryRow("SELECT id, name, picture, google_id FROM users WHERE google_id = ?", gId)
+	err := row.Scan(&user.Id, &user.Name, &user.Picture, &user.GoogleId)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
 }

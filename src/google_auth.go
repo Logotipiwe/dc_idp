@@ -4,7 +4,9 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/google/uuid"
 	env "github.com/logotipiwe/dc_go_env_lib"
+	"github.com/logotipiwe/dc_go_utils/src/config"
 	"io"
 	"net/http"
 	"net/url"
@@ -14,7 +16,7 @@ import (
 
 func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*GoogleUser, error) {
 	if isGoogleAutoAuth() {
-		autoUser := getAutoAuthedUser()
+		autoUser := getAutoAuthedGoogleUser()
 		return &autoUser, nil
 	}
 	bearer := "Bearer " + googleAccessToken
@@ -46,6 +48,17 @@ func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*GoogleUser, error
 	return &answer, nil
 }
 
+func getAutoAuthedGoogleUser() GoogleUser {
+	return GoogleUser{
+		Sub:        config.GetConfig("LOGOTIPIWE_GMAIL_ID"),
+		Name:       "Reman Gerus",
+		GivenName:  "Reman",
+		FamilyName: "Gerus",
+		Picture:    "https://cojo.ru/wp-content/uploads/2022/11/evaelfi-1-1.webp",
+		Locale:     "??",
+	}
+}
+
 func exchangeGoogleCodeToToken(code string) string {
 	println(fmt.Sprintf("Exchanging code %v to token", code))
 	postUrl := "https://oauth2.googleapis.com/token"
@@ -74,26 +87,15 @@ func exchangeGoogleCodeToToken(code string) string {
 	return accessToken
 }
 
-func createGoogleUserIfNeeded(user *DcUser) error {
-	exists, err := existsInDbByGoogleId(user.Id)
-	if err != nil {
-		fmt.Println(err)
-		return err
-	}
-	if !exists {
-		fmt.Println("User with google id " + user.GoogleId + " doesn't exist. Creating in db...")
-		user, err = createUserInDb(user)
-		if err != nil {
-			return err
-		}
-		fmt.Println("User with google id " + user.GoogleId + " created!")
-	}
-	return nil
-}
-
 func createDcUserFromGoogleUser(gUser *GoogleUser) *DcUser {
+	var dcId string
+	if gUser.Sub == config.GetConfig("LOGOTIPIWE_GMAIL_ID") {
+		dcId = config.GetConfig("LOGOTIPIWE_DC_ID")
+	} else {
+		dcId = uuid.NewString()
+	}
 	return &DcUser{
-		Id:       gUser.Sub, //temp
+		Id:       dcId,
 		Name:     gUser.Name,
 		Picture:  gUser.Picture,
 		GoogleId: gUser.Sub,
