@@ -21,6 +21,7 @@ services:
       OUTER_SCHEME : ${OUTER_SCHEME}
       OUTER_HOST : ${OUTER_HOST}
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
+      M_TOKEN: ${M_TOKEN}
 #    ports:
 #      - 82:81
 networks:

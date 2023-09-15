@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"net/http"
 )
@@ -31,7 +32,12 @@ func getUserData(r *http.Request) (*DcUser, error) {
 	if err != nil {
 		return nil, err
 	}
-	return getUserFromDbByGoogleId(gUser.Sub)
+	user, err := getUserFromDbByGoogleId(gUser.Sub)
+	if err == nil {
+		userJson, _ := json.Marshal(user)
+		fmt.Println(string(userJson))
+	}
+	return user, err
 }
 
 func getAccessTokenFromCookie(r *http.Request) (string, error) {

@@ -53,10 +53,11 @@ jobs:
           export DB_HOST=${{ env.DB_HOST }}
           export DB_USER=${{ env.DB_USER }}
           export DB_PASS=${{ env.DB_PASS }}
-          export LOGOTIPIWE_DC_ID: ${{ env.LOGOTIPIWE_DC_ID }}
+          export LOGOTIPIWE_DC_ID=${{ env.LOGOTIPIWE_DC_ID }}
           export LOGOTIPIWE_GMAIL_ID=${{ env.LOGOTIPIWE_GMAIL_ID }}
           export G_OAUTH_CLIENT_SECRET=${{ env.G_OAUTH_CLIENT_SECRET }}
           export OUTER_SCHEME=${{ env.OUTER_SCHEME }}
           export OUTER_HOST=${{ env.OUTER_HOST }}
+          export M_TOKEN=${{ env.M_TOKEN }}
           docker-compose -f /kuber/idp/idp.yml down --remove-orphans
           docker-compose -f /kuber/idp/idp.yml up -d

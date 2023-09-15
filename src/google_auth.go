@@ -16,7 +16,10 @@ import (
 
 func getGoogleUserDataFromGoogleAT(googleAccessToken string) (*GoogleUser, error) {
 	if isGoogleAutoAuth() {
+		fmt.Println("Auto auth enabled, getting auto authed user...")
 		autoUser := getAutoAuthedGoogleUser()
+		userJson, _ := json.Marshal(autoUser)
+		fmt.Println(string(userJson))
 		return &autoUser, nil
 	}
 	bearer := "Bearer " + googleAccessToken

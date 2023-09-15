@@ -52,3 +52,13 @@ func getUserFromDbByGoogleId(gId string) (*DcUser, error) {
 	}
 	return &user, nil
 }
+
+func getUserFromDbById(id string) (*DcUser, error) {
+	user := DcUser{}
+	row := db.QueryRow("SELECT id, name, picture, google_id FROM users WHERE id = ?", id)
+	err := row.Scan(&user.Id, &user.Name, &user.Picture, &user.GoogleId)
+	if err != nil {
+		return nil, err
+	}
+	return &user, nil
+}

@@ -20,8 +20,9 @@ services:
       OUTER_SCHEME: http
       OUTER_HOST: localhost
       FALLBACK_REDIRECT: ${OAUTH_FALLBACK_REDIRECT-/}
-      GOOGLE_AUTO_AUTH: 0
+      GOOGLE_AUTO_AUTH: 1
       LOGOTIPIWE_DC_ID: ${LOGOTIPIWE_DC_ID}
+      M_TOKEN: ${M_TOKEN}
 #      CONFIG_SERVER_URL: http://config_server
 #      SERVICE_NAME: pixel-battle-back
 #      NAMESPACE: dev-dc

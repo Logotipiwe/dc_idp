@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"github.com/Logotipiwe/dc_go_auth_lib/auth"
 	env "github.com/logotipiwe/dc_go_env_lib"
 	"html/template"
 	"net/http"
@@ -99,6 +100,31 @@ func main() {
 		if err != nil {
 			println("Error getting user: %s", err.Error())
 			w.WriteHeader(403)
+			return
+		}
+		marshal, err := json.Marshal(&user)
+		if err != nil {
+			w.WriteHeader(500)
+			return
+		}
+		fmt.Fprint(w, string(marshal))
+	})
+
+	http.HandleFunc("/get-user-by-id", func(w http.ResponseWriter, r *http.Request) {
+		println("/get-user-by-id")
+		w.Header().Set("Access-Control-Allow-Origin", "*") //TODO only on dev
+
+		err = auth.AuthAsMachine(r)
+		if err != nil {
+			println("Error: Cannot auth as machine", err.Error())
+			w.WriteHeader(401)
+			return
+		}
+		userID := r.URL.Query().Get("userId")
+		user, err := getUserFromDbById(userID)
+		if err != nil {
+			println("Error getting user: %s", err.Error())
+			w.WriteHeader(500)
 			return
 		}
 		marshal, err := json.Marshal(&user)
