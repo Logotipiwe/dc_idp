@@ -20,6 +20,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	http.HandleFunc("/health", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Fprint(w, "ok")
+	})
+
 	http.HandleFunc("/auth", func(w http.ResponseWriter, r *http.Request) {
 		println("/auth")
 		redirect := r.URL.Query().Get("redirect")
@@ -95,7 +100,7 @@ func main() {
 
 	http.HandleFunc("/getUser", func(w http.ResponseWriter, r *http.Request) {
 		println("/getUser")
-		w.Header().Set("Access-Control-Allow-Origin", "*") //TODO only on dev
+		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3003") //TODO only on dev
 		user, err := getUserData(r)
 		if err != nil {
 			println("Error getting user: %s", err.Error())
