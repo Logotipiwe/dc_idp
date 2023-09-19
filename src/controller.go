@@ -101,6 +101,7 @@ func main() {
 	http.HandleFunc("/getUser", func(w http.ResponseWriter, r *http.Request) {
 		println("/getUser")
 		w.Header().Set("Access-Control-Allow-Origin", "http://localhost:3003") //TODO only on dev
+		w.Header().Set("Access-Control-Allow-Credentials", "true")             //TODO only on dev
 		user, err := getUserData(r)
 		if err != nil {
 			println("Error getting user: %s", err.Error())
